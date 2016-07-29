@@ -1,2 +1,2 @@
 # DATA606
-Statistics and Probability for Data Analytics
+Statistics and Probability for Data Analytics @ CUNY MSDA
