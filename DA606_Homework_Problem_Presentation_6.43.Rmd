@@ -1,0 +1,55 @@
+---
+title: 'DA606 - Homework Presentation: #6.43'
+author: "Dan Fanelli"
+date: "March 22, 2016"
+output: html_document
+---
+
+# 6.43 Rock-paper-scissors.
+
+### Problem:
+
+Rock-paper-scissors is a hand game played by two or more people
+where players choose to sign either rock, paper, or scissors with their hands. For your statistics class project, you want to evaluate whether players choose between these three options randomly, or if certain options are favored above others. You ask two friends to play rock-paper-scissors and count the times each option is played. The following table summarizes the data:
+
+Use these data to evaluate whether players choose between these three options randomly, or if certain options are favored above others. Make sure to clearly outline each step of your analysis, and interpret your results in context of the data and the research question.
+
+### Manual Solution:
+
++--------------------+--------------------+--------------------+--------------------+
+|                    | Rock               | Paper              | Scissor            |
++====================+====================+=========================================+
+| Actual             | 43                 | 21                 | 35                 |
++--------------------+--------------------+--------------------+--------------------+
+| Expected           | 33                 | 33                 | 33                 |  
++--------------------+--------------------+--------------------+--------------------+
+| Z Score Equation   | (43-33)/sqrt(33)   | (21-33)/sqrt(33)   | (35-33)/sqrt(33)   |  
++--------------------+--------------------+--------------------+--------------------+
+| Z Score Value      | 1.74               | -2.09              | 0.35               |  
++--------------------+--------------------+--------------------+--------------------+
+| Z^2 Value          | 3.03               | 4.37               | 0.12               |  
++--------------------+--------------------+--------------------+--------------------+
+
+Sum of Z-Scores-Squared: 3.03+4.37+0.12 = ___7.52___
+
+If the Null Hypothesis is TRUE, then X^2 = 7.52 follows a Chi-Squared Distribution. 
+
+K = 3 Categories (Rock, Paper, Scissor), so allow k-1 degrees of freedom.
+
+Table on P.432 says that for degrees of freedom __df=2__, that 7.52 means a little over a __2%__ chance this is due to chance.
+
+### R Package Solution:
+
+```{r warning=FALSE}
+library(MASS)
+library(knitr)
+
+null.probs = c(1/3,1/3,1/3)
+freqs = c(43,21,35)
+chisq.test(freqs, p=null.probs)
+
+```
+
+### Confirmed: 
+
+__2% chance__ that this Rock Paper Scissors uneven distribution was due to chance.

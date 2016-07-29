@@ -1,0 +1,152 @@
+---
+title: "DA 606 - Lab 3"
+author: "Dan Fanelli"
+date: "February 24, 2016"
+output: pdf_document
+---
+
+# Setup 1:
+
+```{r}
+download.file("http://www.openintro.org/stat/data/bdims.RData", destfile = "bdims.RData")
+load("bdims.RData")
+head(bdims)
+mdims <- subset(bdims, sex == 1)
+fdims <- subset(bdims, sex == 0)
+```
+
+# Exercise 1: The mean of the men's histogram is obviously further right, but it seems that the Men's is (slightly) skewed __right__ while the women's is skewed __left__
+
+```{r}
+hist(mdims$hgt, 
+     main="Men's Heights", 
+     xlab="Men", 
+     border="black", 
+     col="blue", 
+     xlim=c(125,225), 
+     las=1, 
+     breaks=10, 
+     prob = TRUE)
+
+hist(fdims$hgt, 
+     main="Women's Heights", 
+     xlab="Women", 
+     border="black", 
+     col="pink", 
+     xlim=c(125,225), 
+     las=1, 
+     breaks=10, 
+     prob = TRUE)
+
+```
+
+# Setup 2: The given data for Females
+
+```{r}
+fhgtmean <- mean(fdims$hgt)
+fhgtsd   <- sd(fdims$hgt)
+hist(fdims$hgt, probability = TRUE)
+x <- 140:190
+y <- dnorm(x = x, mean = fhgtmean, sd = fhgtsd)
+lines(x = x, y = y, col = "blue")
+```
+
+# Setup 2b: (Do it for Males too)
+```{r}
+mhgtmean <- mean(mdims$hgt)
+mhgtsd   <- sd(mdims$hgt)
+hist(mdims$hgt, probability = TRUE)
+x <- 140:190
+y <- dnorm(x = x, mean = mhgtmean, sd = mhgtsd)
+lines(x = x, y = y, col = "blue")
+```
+
+# Exercise 2: Based on the data, and after looking at the  men's chart, I would say that this chart __does__ follow a nearly normal distribution, though I find it interesting that the female's curve does not go above the histogram bars, while the men's curve does...
+
+# Setup 3: 
+```{r}
+qqnorm(fdims$hgt)
+qqline(fdims$hgt)
+
+sim_norm <- rnorm(n = length(fdims$hgt), mean = fhgtmean, sd = fhgtsd)
+qqnorm(sim_norm)
+qqline(sim_norm)
+```
+
+# Exercise 3: (See Plot Above) The simlated normal data looks comparable to the real fdim data.
+
+# Setup 4:
+```{r}
+qqnormsim(fdims$hgt)
+```
+
+# Exercise 4: The normal probability plot for fdims$hgt __DOES__ look similar to the plots created for the simulated data. The plots __DO__ provide evidence that the female heights are nearly normal.
+
+# Setup 5: Using the same technique, determine whether or not female weights appear to come from a normal distribution.
+```{r}
+fwgtmean <- mean(fdims$wgt)
+fwgtsd   <- sd(fdims$wgt)
+
+qqnorm(fdims$wgt)
+qqline(fdims$wgt)
+
+sim_norm <- rnorm(n = length(fdims$wgt), mean = fhgtmean, sd = fhgtsd)
+qqnorm(sim_norm)
+qqline(sim_norm)
+
+qqnormsim(fdims$wgt)
+```
+
+# Exercise 5: Aside from some outliers, the female weights __DOES__ also appear to come from a normal distribution.
+
+# Setup 6:
+```{r}
+1 - pnorm(q = 182, mean = fhgtmean, sd = fhgtsd)
+sum(fdims$hgt > 182) / length(fdims$hgt)
+```
+
+# Exercise 6: Write out two probability questions that you would like to answer; one regarding female heights and one regarding female weights. Calculate the those probabilities using both the theoretical normal distribution as well as the empirical distribution (four probabilities in all). Which variable, height or weight, had a closer agreement between the two methods?
+
+__1: Female Heights__ What female height separates the highest 2.5% from the lowest 97.5%?
+__2: Female Weights__ What female weight marks the highest 2.5% from the lowest 97.5%?
+
+#1 __Heights__ as theoretical normal dist:
+
+```{r}
+pop_sd <- sd(fdims$hgt)*sqrt((length(fdims$hgt)-1)/(length(fdims$hgt)))
+pop_mean <- mean(fdims$hgt)
+# 2 is the # of SD's for the 5%
+value_for_97point5th_percentile <- pop_mean + 2 * pop_sd
+value_for_97point5th_percentile
+```
+
+#1 __Heights__ as empirical dist:
+
+```{r}
+sorted_f_heights <- sort(fdims$hgt, decreasing = TRUE)
+num_heights <- length(sorted_f_heights)
+count_of_top_2_pt_5_pct_f_height <- num_heights * 0.025
+sorted_f_heights[count_of_top_2_pt_5_pct_f_height]
+```
+
+#2 __Weights__ as theoretical normal dist:
+
+```{r}
+pop_sd <- sd(fdims$wgt)*sqrt((length(fdims$wgt)-1)/(length(fdims$wgt)))
+pop_mean <- mean(fdims$wgt)
+# 2 is the # of SD's for the 5%
+value_for_97point5th_percentile <- pop_mean + 2 * pop_sd
+value_for_97point5th_percentile
+```
+
+#2 __Weights__ as empirical dist:
+
+```{r}
+sorted_f_weights <- sort(fdims$wgt, decreasing = TRUE)
+num_weights <- length(sorted_f_weights)
+count_of_top_2_pt_5_pct_f_weight <- num_weights * 0.025
+sorted_f_weights[count_of_top_2_pt_5_pct_f_weight]
+```
+
+The __Heights__ had a closer agreement between the two methods.
+
