@@ -1,0 +1,49 @@
+---
+title: "DA 606 Final Project"
+author: "Dan Fanelli"
+output: html_document
+---
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# load data
+library(knitr)
+library(ggplot2)
+library(sqldf)
+
+#SAMPLE_SIZE <- 'ALL'
+SAMPLE_SIZE <- 5000
+DO_WRITE_SAMPLES <- FALSE 
+DO_TOTALS_PER_CANDIDATE <- TRUE
+DO_AVG_DONATION_SIZE <- TRUE
+```
+
+
+### Part 1 - Introduction:
+
+Campaign contributions can teach us a lot about our candidates that the debates and media may not.  Some of these questions are:
+
+* Who are the donors?
+* Who received the largest donations?
+* What is the mean and median size of the donation?
+* What donation patterns do we see across the political spectrum?
+* When in the campaign timeframe are the donations made?
+* Are there patterns in the size and donor based upon where the candidate falls on the political spectrum?
+
+### Part 2 - Data:
+
+
+### Part 3 - Exploratory data analysis:
+
+
+### Part 4 - Inference:
+
+
+### Part 5 - Conclusion: 
+
+
+### References:
+
+
+### Appendix (optional):
+
+Remove this section if you don't have an appendix

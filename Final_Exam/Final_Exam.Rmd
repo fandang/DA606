@@ -1,0 +1,212 @@
+---
+title: "DA 606 Final Exam"
+author: "Dan Fanelli"
+date: "May 14, 2016"
+output: pdf_document
+---
+
+# Part 1
+
+Considering the given information:
+
+__[a] Describe the two distributions.__
+
+These 2 distributions have basically the same mean.  They do not have similar standard deviations.  A is skewed right, while B does not have such a skew.  As stated in the question, A is the distribution of an observed variable, and B is the distribution of the mean of that distribution A.
+
+__[b] Explain why the means of these two distributions are similar but the standard deviations are not.__
+
+The means are similar because of the Central Limit Theorum (stated below). The Standard Deviations are not similar because they are standard deviations of 2 different statistics: __A__ is the standard deviation of the values of the random sample, while __B__ is the standard deviation of the MEAN of those values given 500 random samples of sample size 30.
+
+__[c] What is the statistical principal that describes this phenomenon:__
+
+The __Central Limit Theorem (for normal data)__ is the statistical principal that describes this phenomenon: 
+
+"The sampling distribution of the mean is nearly normal when the sample observations are independent and come from a nearly normal distribution. This is true for any sample size."
+
+# Part 2
+
+The Input:
+
+```{r}
+options(digits=2)
+
+data1 <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5), y=c(8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68))
+
+data2 <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5), y=c(9.14,8.14,8.74,8.77,9.26,8.1,6.13,3.1,9.13,7.26,4.74))
+
+data3 <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5), y=c(7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73))
+
+data4 <- data.frame(x=c(8,8,8,8,8,8,8,19,8,8,8), y=c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.5,5.56,7.91,6.89))
+```
+
+Take a quick look at them:
+
+```{r}
+data1
+data2
+data3
+data4
+
+# confirm mins and maxes and plot them all with the same bounds for comparison:
+max(data1$x,data2$x,data3$x,data4$x,data1$y,data2$y,data3$y,data4$y)
+# above max was 19, so we'll go with 20x20
+lims <- c(0, 20)
+
+plot(data1$x, data1$y, xlim=lims, ylim=lims)
+fit1 <- lm(data1$y ~ data1$x)
+abline(fit1)
+grid(NULL, NULL)
+
+plot(data2$x, data2$y, xlim=lims, ylim=lims)
+fit2 <- lm(data2$y ~ data2$x)
+abline(fit2)
+grid(NULL, NULL)
+
+plot(data3$x, data3$y, xlim=lims, ylim=lims)
+fit3 <- lm(data3$y ~ data3$x)
+abline(fit3)
+grid(NULL, NULL)
+
+plot(data4$x, data4$y, xlim=lims, ylim=lims)
+fit4 <- lm(data4$y ~ data4$x)
+abline(fit4)
+grid(NULL, NULL)
+
+```
+
+### For each column, calculate (to two decimal places):
+
+#### a. The mean (for x and y separately; 1 pt).
+
+```{r}
+mean(data1$x)
+mean(data1$y)
+
+mean(data2$x)
+mean(data2$y)
+
+mean(data3$x)
+mean(data3$y)
+
+mean(data4$x)
+mean(data4$y)
+```
+
+#### b. The median (for x and y separately; 1 pt).
+
+```{r}
+median(data1$x)
+median(data1$y)
+
+median(data2$x)
+median(data2$y)
+
+median(data3$x)
+median(data3$y)
+
+median(data4$x)
+median(data4$y)
+```
+
+#### c. The standard deviation (for x and y separately; 1 pt).
+
+```{r}
+sd(data1$x)
+sd(data1$y)
+
+sd(data2$x)
+sd(data2$y)
+
+sd(data3$x)
+sd(data3$y)
+
+sd(data4$x)
+sd(data4$y)
+```
+
+### For each x and y pair, calculate (also to two decimal places; 1 pt):
+
+#### d. The correlation (1 pt).
+
+```{r}
+cor(data1$x, data1$y)
+cor(data2$x, data2$y)
+cor(data3$x, data3$y)
+cor(data4$x, data4$y)
+```
+
+#### e. Linear regression equation (2 pts).
+
+__Equation 1:__ y = 3 + 0.5*x
+
+```{r}
+fit1
+```
+
+__Equation 2:__ y = 3 + 0.5*x
+
+```{r}
+fit2
+```
+
+__Equation 3:__ y = 3 + 0.5*x
+
+```{r}
+fit3
+```
+
+__Equation 4:__ y = 3 + 0.5*x
+
+```{r}
+fit4
+```
+
+#### f. R-Squared (2 pts).
+
+```{r}
+summary(fit1)$r.squared 
+summary(fit2)$r.squared 
+summary(fit3)$r.squared 
+summary(fit4)$r.squared 
+```
+
+#### For each pair, is it appropriate to estimate a linear regression model? Why or why not? Be specific as to why for each pair and include appropriate plots! (4 pts)
+
+Sources (such as http://stattrek.com/regression/linear-regression.aspx) tell us that Simple linear regression is appropriate when:
+
+1. The dependent variable Y has a linear relationship to the independent variable X. To check this, make sure that the XY scatterplot is linear and that the residual plot shows a random pattern. 
+2. For each value of X, the probability distribution of Y has the same standard deviation ??. When this condition is satisfied, the variability of the residuals will be relatively constant across all values of X, which is easily checked in a residual plot
+3. For any given value of X, The Y values are independent, as indicated by a random pattern on the residual plot.
+4. For any given value of X, The Y values are roughly normally distributed (i.e., symmetric and unimodal). A little skewness is ok if the sample size is large. A histogram or a dotplot will show the shape of the distribution.
+
+
+```{r}
+resid1 = resid(fit1)
+plot(data1$x, resid1, ylab="Residuals 1") 
+abline(0, 0)
+
+resid2 = resid(fit2)
+plot(data2$x, resid2, ylab="Residuals 2") 
+abline(0, 0)
+
+resid3 = resid(fit3)
+plot(data3$x, resid3, ylab="Residuals 3") 
+abline(0, 0)
+
+resid4 = resid(fit4)
+plot(data4$x, resid4, ylab="Residuals 4") 
+abline(0, 0)
+```
+
+* __ONLY__ data1's residuals show no pattern, so data2, data3, and data4 should not use a linear regresison model.  As for data1, #1, #2, and #4 also hold true, so it is a match for a linear model. 
+* For __data1__, (1) The XY scatterplot is linear and that the residual plot shows a random pattern, (2) the variability of the residuals will be relatively constant across all values of X, (3) Y's are independent as the residual plot shows, and (4) The Y's are __roughly__ normally distributed (see histogram below)
+
+```{r}
+hist(data1$y, data1$x)
+```
+
+__Explain why it is important to include appropriate visualizations when analyzing data. Include any visualization(s) you create. (2 pts) __
+
+* In all problem solving, a picture is worth 1000 words
+* Specifically in these problems, even if it were possible to visualize uneven histogram distributions, skews, and other attributes that point towards problems using particular strategies, it is very difficult to tell by the numbers when there is a pattern in the residuals.  Visualizations, on the other hand, make patterns as hidden as the residuals very apparent.
+* Included visuals (see above)
